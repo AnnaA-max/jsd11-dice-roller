@@ -1,4 +1,5 @@
 const diceDisplay = document.getElementById("diceDisplay");
+const diceDisplay2 = document.getElementById("diceDisplay2");
 const rollButton = document.getElementById("rollButton");
 const historyList = document.getElementById("historyList");
 const noHistoryMessage = document.getElementById("noHistoryMessage");
@@ -45,13 +46,13 @@ function createDiceSVG(value) {
     const circles = dots
         .map(
             (d) =>
-                `<circle cx="${d.cx}" cy="${d.cy}" r="10" fill="#4ADE80"></circle>`
+                `<circle cx="${d.cx}" cy="${d.cy}" r="10" fill="#F5569B"></circle>`
         )  // dots.map เข้าไปเอาของออกมาทีละชิ้น(ค่าแต่ละค่า)ในarrray เช่นใน6//
         .join("");
 
         return `
         <svg viewBox="0 0 100 100" class="w-full h-full">
-            <rect width="100" height="100" rx="15" ry="15" fill="#333"></rect>
+            <rect width="100" height="100" rx="15" ry="15" fill="#FFCBEB"></rect>
             ${circles}
         </svg>
     `;
@@ -77,20 +78,27 @@ function addRollToHistory(result){
 function rollDice(){
     rollButton.disabled = true;
     diceDisplay.classList.add("animate-shake");
+    diceDisplay2.classList.add("animate-shake");
 
     let count = 0
 
     const interval = setInterval(() => {
        const temp = Math.floor(Math.random() * 6) + 1;
+       const temp2 = Math.floor(Math.random() * 6) + 1;
         // 0 ->6 , include 6
         diceDisplay.innerHTML = createDiceSVG(temp);
+        diceDisplay2.innerHTML = createDiceSVG(temp2);
         if(++count >= 10) {
             clearInterval(interval);
             const final = Math.floor(Math.random() * 6) + 1;
+            const final2 = Math.floor(Math.random()*6) + 1;
             diceDisplay.innerHTML = createDiceSVG(final);
+            diceDisplay2.innerHTML = createDiceSVG(final2)
             diceDisplay.classList.remove("animate-shake");
+            diceDisplay2.classList.remove("animate-shake");
             rollButton.disabled = false;
-            addRollToHistory(final)
+            addRollToHistory(`🎲 Dice 1: ${final} | 🎲 Dice 2: ${final2}`);
+            
         }
     }, 100);
 }
@@ -101,3 +109,4 @@ function rollDice(){
 rollButton.addEventListener("click", rollDice);
 
 diceDisplay.innerHTML = createDiceSVG(1);
+diceDisplay2.innerHTML = createDiceSVG(1);
